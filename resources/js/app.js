@@ -8,8 +8,11 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import VueRouter from 'vue-router' 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 Vue.use(VueRouter);
+Vue.use(VueAxios, axios);
 
 /**
  * The following block of code may be used to automatically register your
@@ -26,6 +29,9 @@ import App from './views/App.vue'
 import Hello from './views/Hello.vue'
 import Home from './views/Home.vue'
 import Stats from './views/Stats.vue'
+import Login from './views/Login.vue'
+import Register from './views/Register'
+import Dashboard from './views/Dashboard'
 
 Vue.component('random-chart', require('./components/RandomChart.vue').default);
 /**
@@ -33,6 +39,8 @@ Vue.component('random-chart', require('./components/RandomChart.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+axios.defaults.baseURL = 'http://localhost:8000';
 
 const router = new VueRouter({
     mode: 'history',
@@ -51,15 +59,44 @@ const router = new VueRouter({
           path: '/stats',
           name: 'stats',
           component: Stats,
-      }
+      },
+      {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+          auth: false
+        },
+      },
+      {
+        path: '/register',
+        name: 'register',
+        component: Register,
+        meta: {
+          auth: false
+        },
+      },
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        meta: {
+            auth: true
+        },
+      },
     ],
   });
 
-const app = new Vue({
-    el: '#app',
-    components: { App },
-    router,
-});
+  Vue.router = router
+  Vue.use(require('@websanova/vue-auth'), {
+     auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+     http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
+     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
+  });
+  
+  App.router = Vue.router;
+  
+  new Vue(App).$mount('#app');
 
 
 
