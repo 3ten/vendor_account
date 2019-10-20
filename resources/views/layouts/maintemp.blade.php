@@ -10,7 +10,7 @@
  </head>
  <body>
      <header>
-        @yield('header');
+        @yield('header')
      </header>
      <div id="content">
         @yield('content')
