@@ -11,21 +11,25 @@
 |
 */
 
-Route::get('/{any}', 'AppController@index')->where('any', '.*'); 
-
-Route::group(['middleware' => 'cors'], function () {
-    Route::post('auth/register', 'AuthController@register');
-    Route::post('auth/login', 'AuthController@login');
+Route::group(['middleware' => 'auth:api'], function(){
+    // Users
+    Route::get('users', 'UserController@index')->middleware('isAdmin');
+    Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
 });
 
-Route::group(['middleware' => 'jwt.auth'], function(){
-    Route::get('auth/user', 'AuthController@user');
-    Route::post('auth/logout', 'AuthController@logout');
+Route::prefix('auth')->group(function () {
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::get('refresh', 'AuthController@refresh');    
+    Route::group(['middleware' => 'auth:api'], function(){
+        Route::get('user', 'AuthController@user');
+        Route::post('logout', 'AuthController@logout');
+    });
 });
-    
-Route::group(['middleware' => 'jwt.refresh'], function(){
-    Route::get('auth/refresh', 'AuthController@refresh');
-});
+
+Route::get('/{any}', 'AppController@index')->where('any', '^(?!api\/)[\/\w\.-]*');
+
+
 
 
 

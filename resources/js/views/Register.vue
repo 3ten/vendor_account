@@ -9,7 +9,7 @@
         </div>
 
         <form autocomplete="off" @submit.prevent="register" v-if="!success" method="post">
-            <input type="hidden" name="_token" :value="csrf">
+            
             <div class="form-group" v-bind:class="{ 'has-error': error && errors.name }">
                 <label for="name">Name</label>
                 <input type="text" id="name" class="form-control" v-model="name" required>
@@ -28,6 +28,11 @@
                 <span class="help-block" v-if="error && errors.password">{{ errors.password }}</span>
             </div>
 
+            <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.password }">
+                <label for="password_confirmation">Password Confirmation</label>
+                <input type="password" id="password_confirmation" class="form-control" v-model="password_confirmation">
+            </div>
+
             <button type="submit" class="btn btn-default">Submit</button>
 
         </form>
@@ -40,10 +45,11 @@
                 name: '',
                 email: '',
                 password: '',
-                error: false,
+                password_confirmation: '',
+                has_error: false,
+                error: '',
                 errors: {},
                 success: false,
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             };
         },
 
@@ -54,16 +60,19 @@
                     data: {
                         name: app.name,
                         email: app.email,
-                        password: app.password
+                        password: app.password,
+                        password_confirmation: app.password_confirmation,
                     }, 
                     success: function () {
-                        app.success = true
+                        app.success = true;
+                        this.$router.push({name: 'login', params: {successRegistrationRedirect: true}});
                     },
-                    error: function (resp) {
-                        app.error = true;
-                        app.errors = resp.response.data.errors;
+                    error: function (res) {
+                        console.log(res.response.data.errors);
+                        app.has_error = true;
+                        app.error = res.response.data.error;
+                        app.errors = res.response.data.errors || {};
                     },
-                    redirect: null
                 });                
             }
         }

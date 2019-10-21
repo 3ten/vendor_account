@@ -4,7 +4,7 @@
             <p>There was an error, unable to sign in with those credentials.</p>
         </div>
         <form autocomplete="off" @submit.prevent="login" method="post">
-            <input type="hidden" name="_token" :value="csrf">
+
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email" required>
@@ -24,21 +24,25 @@
                 email: null,
                 password: null,
                 error: false,
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
         },
     methods: {
         login(){
+            var redirect = this.$auth.redirect()
             var app = this
             this.$auth.login({
                 params: {
                     email: app.email,
                     password: app.password
                 }, 
-                success: function () {},
-                error: function () {},
+                success: function () {
+                    const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'dashboard';
+                    this.$router.push({name: redirectTo});
+                },
+                error: function () {
+                    app.has_error = true;
+                },
                 rememberMe: true,
-                redirect: '/dashboard',
                 fetchUser: true,
             });       
         },
