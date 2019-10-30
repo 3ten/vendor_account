@@ -3,6 +3,9 @@
         <div class="alert alert-danger" v-if="error">
             <p>There was an error, unable to sign in with those credentials.</p>
         </div>
+        <div v-if="loading">
+            <b-spinner></b-spinner>
+        </div>
         <form autocomplete="off" @submit.prevent="login" method="post">
 
             <div class="form-group">
@@ -24,12 +27,14 @@
                 email: null,
                 password: null,
                 error: false,
+                loading: false
             }
         },
     methods: {
         login(){
             var redirect = this.$auth.redirect()
             var app = this
+            this.loading = true;
             this.$auth.login({
                 params: {
                     email: app.email,
@@ -38,6 +43,7 @@
                 success: function () {
                     const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'dashboard';
                     this.$router.push({name: redirectTo});
+                    this.loading = false;
                 },
                 error: function () {
                     app.has_error = true;

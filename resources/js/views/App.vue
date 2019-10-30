@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Vue Router Demo App</h1>
-
         <ul>
             <li>
                 <router-link :to="{ name: 'home' }">Home</router-link>

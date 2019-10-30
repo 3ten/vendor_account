@@ -14,6 +14,11 @@ import VueRouter from 'vue-router'
 import App from './views/App'
 import auth from './auth'
 import router from './router'
+import BootstrapVue from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,11 +40,16 @@ Vue.use(VueRouter)
 
 // Set Vue authentication
 Vue.use(VueAxios, axios)
-axios.defaults.baseURL = `${process.env.MIX_APP_URL}`
-Vue.use(VueAuth, auth)
+axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`
+Vue.use(VueAuth, auth)  
+
+Vue.use(BootstrapVue)
 
 Vue.component('random-chart', require('./components/RandomChart.vue').default);
 Vue.component('app', App);
+
+import { BSpinner } from 'bootstrap-vue'
+Vue.component('b-spinner', BSpinner)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -48,7 +58,7 @@ Vue.component('app', App);
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
 });
 
 
