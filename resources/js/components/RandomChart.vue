@@ -1,6 +1,6 @@
 <template>
     <div class="small">
-        <line-chart :chart-data="datacollection"></line-chart>
+        <line-chart :chart-data="data"></line-chart>
         <button @click="fillData()">Randomize</button>
     </div>
 </template>
@@ -12,33 +12,20 @@
         components: {
             LineChart
         },
-        data () {
+        data() {
             return {
-                datacollection: null
+                data: []
             }
         },
-        mounted () {
-            this.fillData()
+        mounted() {
+            this.update()
         },
         methods: {
-            fillData () {
-                this.datacollection = {
-                    labels: [this.getRandomInt(), this.getRandomInt()],
-                    datasets: [
-                        {
-                            label: 'Data One',
-                            backgroundColor: '#f87979',
-                            data: [this.getRandomInt(), this.getRandomInt()]
-                        }, {
-                            label: 'Data One',
-                            backgroundColor: '#f87979',
-                            data: [this.getRandomInt(), this.getRandomInt()]
-                        }
-                    ]
-                }
-            },
-            getRandomInt () {
-                return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+            update() {
+                axios.get('/api/getData').then((response) => {
+                    this.data = response.data;
+                    console.log(response.data+ 'console log');
+                });
             }
         }
     }
@@ -47,6 +34,6 @@
 <style>
     .small {
         max-width: 600px;
-        margin:  150px auto;
+        margin: 150px auto;
     }
 </style>

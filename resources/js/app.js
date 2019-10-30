@@ -26,6 +26,8 @@ import App from './views/App.vue'
 import Hello from './views/Hello.vue'
 import Home from './views/Home.vue'
 import Stats from './views/Stats.vue'
+import Cards from './views/Cards.vue'
+import Order from './views/Order.vue'
 
 Vue.component('random-chart', require('./components/RandomChart.vue').default);
 /**
@@ -51,6 +53,14 @@ const router = new VueRouter({
           path: '/stats',
           name: 'stats',
           component: Stats,
+      } ,{
+          path: '/cards',
+          name: 'cards',
+          component: Cards,
+      },{
+          path: '/order',
+          name: 'order',
+          component: Order,
       }
     ],
   });
