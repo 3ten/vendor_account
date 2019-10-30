@@ -4,9 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import 'es6-promise/auto'
-import axios from 'axios'
-import './bootstrap'
+require('./bootstrap');
+
 import Vue from 'vue'
 import VueAuth from '@websanova/vue-auth'
 import VueAxios from 'vue-axios'
@@ -55,6 +54,35 @@ Vue.component('b-spinner', BSpinner)
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/hello',
+        name: 'hello',
+        component: Hello,
+      },
+      {
+          path: '/stats',
+          name: 'stats',
+          component: Stats,
+      } ,{
+          path: '/cards',
+          name: 'cards',
+          component: Cards,
+      },{
+          path: '/order',
+          name: 'order',
+          component: Order,
+      }
+    ],
+  });
 
 const app = new Vue({
     el: '#app',
