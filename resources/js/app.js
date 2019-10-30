@@ -55,35 +55,6 @@ Vue.component('b-spinner', BSpinner)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-      {
-        path: '/',
-        name: 'home',
-        component: Home
-      },
-      {
-        path: '/hello',
-        name: 'hello',
-        component: Hello,
-      },
-      {
-          path: '/stats',
-          name: 'stats',
-          component: Stats,
-      } ,{
-          path: '/cards',
-          name: 'cards',
-          component: Cards,
-      },{
-          path: '/order',
-          name: 'order',
-          component: Order,
-      }
-    ],
-  });
-
 const app = new Vue({
     el: '#app',
     router,

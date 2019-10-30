@@ -10,7 +10,7 @@ class FBController extends Controller
 
     public function getCards()
     {
-        $database = 'D:\Datakrat\Database\MY_BASE.FDB';
+        $database = 'C:\Users\nesst\Downloads\OSPanel\domains\shop\MY_BASE.FDB';
         $user = 'SYSDBA';
         $password = 'masterkey';
         $db = ibase_connect($database, $user, $password);
@@ -35,7 +35,7 @@ class FBController extends Controller
 
     public function getOrder()
     {
-        $database = 'D:\Datakrat\Database\MY_BASE.FDB';
+        $database = 'C:\Users\nesst\Downloads\OSPanel\domains\shop\MY_BASE.FDB';
         $user = 'SYSDBA';
         $password = 'masterkey';
         $db = ibase_connect($database, $user, $password);

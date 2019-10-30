@@ -4,7 +4,7 @@
             <div class="col-xl-8 ">
                 <div data-spy="scroll" class="pre-scrollable cards-box">
                     <ul class="list-group cards-box">
-                        <div v-for="el in data">
+                        <div v-bind:key="el" v-for="el in data">
                             <div class="col-xl-12">
                                 <li class="list-group-item">{{el.name}} </li>
                             </div>
@@ -29,7 +29,7 @@
         },
         methods: {
             update() {
-                axios.get('/api/getOrder').then((response) => {
+                axios.get('/getOrder').then((response) => {
                     this.data = response.data;
                     console.dir(response.data);
                 });

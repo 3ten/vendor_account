@@ -4,7 +4,7 @@
             <div class="col-xl-8 ">
                 <div data-spy="scroll" class="pre-scrollable cards-box">
                     <div v-if="loading">sdfsdfsdfsef</div>
-                    <div v-for="el in data">
+                    <div v-bind:key="el" v-for="el in data">
                         <div class="row my-2">
                             <div class="col-xl-12">
                                 <div class="card">
@@ -39,7 +39,7 @@
         },
         methods: {
             async update () {
-                await axios.get('/api/getCards').then((response) => {
+                await axios.get('/getCards').then((response) => {
                     this.data = response.data;
                     console.dir(response.data);
                 });

@@ -7,6 +7,8 @@ import Stats from './views/Stats.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
+import Cards from './views/Cards'
+import Order from './views/Order'
 
 const router = new VueRouter({
     history: true,
@@ -51,6 +53,22 @@ const router = new VueRouter({
             auth: true
         },
       },
+      {
+        path: '/cards',
+        name: 'cards',
+        component: Cards,
+        meta: {
+          auth: true
+        },
+      },
+      {
+        path: '/order',
+        name: 'order',
+        component: Order,
+        meta: {
+          auth: true
+        }
+      }
     ],
   });
 
