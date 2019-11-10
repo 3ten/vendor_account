@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
     Route::get('/getCards', 'FBController@getCards');
     Route::get('/getOrder', 'FBController@getOrder');
+    Route::post('/getOrderList/', 'FBController@getOrderList');
 });
 
 Route::prefix('auth')->group(function () {
@@ -36,4 +37,3 @@ Route::prefix('auth')->group(function () {
 // });
 
 //Route::get('/getData', 'GetSalesData@getFBData');
-

@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
+            <router-link :to="{ name: 'hello' }">Hello World</router-link>
             <div class="col-xl-8 ">
                 <div data-spy="scroll" class="pre-scrollable cards-box">
                     <div v-if="loading">sdfsdfsdfsef</div>
@@ -38,8 +39,8 @@
             this.update()
         },
         methods: {
-            async update () {
-                await axios.get('/getCards').then((response) => {
+             update () {
+                 axios.get('/getCards').then((response) => {
                     this.data = response.data;
                     console.dir(response.data);
                 });

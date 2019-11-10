@@ -32,8 +32,8 @@
         },
     methods: {
         login(){
-            var redirect = this.$auth.redirect()
-            var app = this
+            var redirect = this.$auth.redirect();
+            var app = this;
             this.loading = true;
             this.$auth.login({
                 params: {

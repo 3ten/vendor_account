@@ -9,67 +9,77 @@ import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import Cards from './views/Cards'
 import Order from './views/Order'
+import OrderList from './views/OrderSpec'
 
 const router = new VueRouter({
     history: true,
     mode: 'history',
     routes: [
-      {
-        path: '/',
-        name: 'home',
-        component: Home
-      },
-      {
-        path: '/hello',
-        name: 'hello',
-        component: Hello,
-      },
-      {
-          path: '/stats',
-          name: 'stats',
-          component: Stats,
-      },
-      {
-        path: '/login',
-        name: 'login',
-        component: Login,
-        meta: {
-          auth: false
+        {
+            path: '/',
+            name: 'home',
+            component: Home
         },
-      },
-      {
-        path: '/register',
-        name: 'register',
-        component: Register,
-        meta: {
-          auth: false
+        {
+            path: '/hello',
+            name: 'hello',
+            component: Hello,
         },
-      },
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
-        meta: {
-            auth: true
+        {
+            path: '/stats',
+            name: 'stats',
+            component: Stats,
         },
-      },
-      {
-        path: '/cards',
-        name: 'cards',
-        component: Cards,
-        meta: {
-          auth: true
+        {
+            path: '/login',
+            name: 'login',
+            component: Login,
+            meta: {
+                auth: false
+            },
         },
-      },
-      {
-        path: '/order',
-        name: 'order',
-        component: Order,
-        meta: {
-          auth: true
+        {
+            path: '/register',
+            name: 'register',
+            component: Register,
+            meta: {
+                auth: false
+            },
+        },
+        {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: Dashboard,
+            meta: {
+                auth: true
+            },
+        },
+        {
+            path: '/cards',
+            name: 'cards',
+            component: Cards,
+            meta: {
+                auth: true
+            },
+        },
+        {
+            path: '/order',
+            name: 'order',
+            component: Order,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/orderList',
+            name: 'orderList',
+            component: OrderList,
+            props: true,
+            meta: {
+                auth: true
+            }
         }
-      }
     ],
-  });
+});
 
-  export default router;
+export default router;
