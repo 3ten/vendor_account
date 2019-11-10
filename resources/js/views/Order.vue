@@ -46,7 +46,7 @@
                 });
             },
             onClick(id_dochead) {
-                alert('test');
+
                 this.$router.push({name: 'orderList', params: {id: id_dochead}});
 
             }
