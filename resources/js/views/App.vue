@@ -3,9 +3,6 @@
         <h1>Vue Router Demo App</h1>
         <ul>
             <li>
-                ph
-            </li>
-            <li>
                 <router-link :to="{ name: 'hello' }">Hello World</router-link>
             </li>
             <li>
@@ -22,6 +19,9 @@
             </li>
             <li v-if="$auth.check()" class="pull-right">
                 <a href="#" @click.prevent="$auth.logout()">Logout</a>
+            </li>
+            <li v-if="$auth.check()" class="pull-right">
+                <router-link :to="{ name: 'cards'}">Cards</router-link>
             </li>
         </ul>
 

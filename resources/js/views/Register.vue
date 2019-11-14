@@ -16,6 +16,24 @@
                 <span class="help-block" v-if="error && errors.name">{{ errors.name }}</span>
             </div>
 
+            <div class="form-group" v-bind:class="{ 'has-error': error && errors.name }">
+                <label for="inn">ИНН</label>
+                <input type="text" id="inn" class="form-control" v-model="inn" required>
+                <span class="help-block" v-if="error && errors.name">{{ errors.name }}</span>
+            </div>
+
+            <div class="form-group" v-bind:class="{ 'has-error': error && errors.name }">
+                <label for="name">КПП</label>
+                <input type="text" id="kpp" class="form-control" v-model="kpp" required>
+                <span class="help-block" v-if="error && errors.name">{{ errors.name }}</span>
+            </div>
+
+            <div class="form-group" v-bind:class="{ 'has-error': error && errors.name }">
+                <label for="name">Телефон</label>
+                <input type="text" id="phone" class="form-control" v-model="phone" required>
+                <span class="help-block" v-if="error && errors.name">{{ errors.name }}</span>
+            </div>
+
             <div class="form-group" v-bind:class="{ 'has-error': error && errors.email }">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email" required>
@@ -43,6 +61,9 @@
         data(){
             return {
                 name: '',
+                inn: '',
+                kpp: '',
+                phone: '',
                 email: '',
                 password: '',
                 password_confirmation: '',
@@ -59,6 +80,9 @@
                 this.$auth.register({
                     data: {
                         name: app.name,
+                        inn: app.inn,
+                        kpp: app.kpp,
+                        phone: app.phone,
                         email: app.email,
                         password: app.password,
                         password_confirmation: app.password_confirmation,

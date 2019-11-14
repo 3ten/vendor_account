@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 
 class FBController extends Controller
 {
-
+    protected $database = 'C:\Users\nesst\Downloads\MY_BASE.FDB';
+ 
     public function getCards()
     {
-        $database = 'D:\Datakrat\Database\MY_BASE.FDB';
+        //$database = 'C:\Users\nesst\OneDrive\Рабочий стол\web\MY_BASE.FDB';
         $user = 'SYSDBA';
         $password = 'masterkey';
-        $db = ibase_connect($database, $user, $password);
+        $db = ibase_connect($this->database, $user, $password);
 
         $Cards = array();
         @$getCards_SQL = ibase_query("select first 50 * FROM CARDSCLA cl left join ostdaily od on cl.articul = od.articul where od.place_index ='13' and od.ost_date = '02.10.2018 00:00'", $db);
@@ -35,10 +36,10 @@ class FBController extends Controller
 
     public function getOrder()
     {
-        $database = 'D:\Datakrat\Database\MY_BASE.FDB';
+        //$database = 'D:\Datakrat\Database\MY_BASE.FDB';
         $user = 'SYSDBA';
         $password = 'masterkey';
-        $db = ibase_connect($database, $user, $password);
+        $db = ibase_connect($this->database, $user, $password);
 
 
         $Cards = array();
@@ -61,10 +62,10 @@ class FBController extends Controller
 
     public function getOrderList(Request $request)
     {
-        $database = 'D:\Datakrat\Database\MY_BASE.FDB';
+        //$database = 'D:\Datakrat\Database\MY_BASE.FDB';
         $user = 'SYSDBA';
         $password = 'masterkey';
-        $db = ibase_connect($database, $user, $password);
+        $db = ibase_connect($this->database, $user, $password);
 
 
         $Cards = array();

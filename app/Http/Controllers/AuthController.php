@@ -14,6 +14,9 @@ class AuthController extends Controller
     {
         $v = Validator::make($request->all(), [
             'name' => 'required',
+            'inn' => 'required',
+            'kpp' => 'required',
+            'phone' => 'required',
             'email' => 'required|email|unique:users',
             'password'  => 'required|min:3|confirmed',
         ]);        
@@ -27,6 +30,10 @@ class AuthController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->inn = $request->inn;
+        $user->kpp = $request->kpp;
+        $user->phone = $request->phone;
+        $user->code = bcrypt($this->generateCode());
         $user->password = bcrypt($request->password);
         $user->save(); 
 
@@ -34,8 +41,10 @@ class AuthController extends Controller
     }   
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');        
-        if ($token = $this->guard()->attempt($credentials)) {
+        $credentials1 = $request->only('email', 'password');
+        $credentials2 = $request->only('code');
+              
+        if ($token = $this->guard()->attempt($credentials1) || $token = $this->guard()->attempt($credentials2)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         } 
 
@@ -74,5 +83,16 @@ class AuthController extends Controller
     private function guard()
     {
         return Auth::guard();
+    }
+    private function generateCode()
+    {
+        $chars = "qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+        $max = 8;
+        $size = StrLen($chars)-1;  
+        $password = null;
+
+        while($max--) $password.=$chars[rand(0,$size)]; 
+        
+        return $password;
     }
 }
