@@ -3,3 +3,4 @@
         <random-chart></random-chart>
     </div>
 </template>
+

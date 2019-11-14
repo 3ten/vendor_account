@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class FBController extends Controller
 {
     protected $database = 'C:\Users\nesst\Downloads\MY_BASE.FDB';
- 
+    
     public function getCards()
     {
         //$database = 'C:\Users\nesst\OneDrive\Рабочий стол\web\MY_BASE.FDB';
@@ -87,6 +87,46 @@ class FBController extends Controller
 
         }
         return $Cards;
+    }
+
+    public function getOst(Request $request)
+    {
+        $db = ibase_connect($this->database, $this->user, $this->password);
+        $articul = $request->id;
+        $ost = array();
+        $date = array();
+        $data = array();
+        $sql = "SELECT first 30 * FROM OSTDAILY where articul = $articul";
+        @$getOst_SQL = ibase_query($sql, $db);
+        while (@$getOst = ibase_fetch_assoc($getOst_SQL)) {
+            array_push($ost, $getOst['QUANTITY']);
+            array_push($date, $getOst['OST_DATE']);
+        }
+        $data = [
+            'ost' => $ost,
+            'date' => $date,
+        ];
+        return $data;
+    }
+
+    public function getPrix(Request $request)
+    {
+        $db = ibase_connect($this->database, $this->user, $this->password);
+        $articul = $request->id;
+        $quant = array();
+        $date = array();
+        $data = array();
+        $sql = "select * from docspec ds left join dochead dh on dh.id_dochead = ds.id_dochead where dh.doctype = 0 and ds.articul = $articul";
+        @$getOst_SQL = ibase_query($sql, $db);
+        while (@$getOst = ibase_fetch_assoc($getOst_SQL)) {
+            array_push( $quant, $getOst['QUANTITY']);
+            array_push($date, $getOst['DOC_DATE']);
+        }
+        $data = [
+            'quant' => $quant,
+            'date' => $date,
+        ];
+        return $data;
     }
 //
 }
