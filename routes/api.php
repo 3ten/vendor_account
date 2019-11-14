@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/getCards', 'FBController@getCards');
     Route::get('/getOrder', 'FBController@getOrder');
     Route::post('/getOrderList/', 'FBController@getOrderList');
+    Route::post('/getOst', 'FBController@getOst');
+    Route::post('/getPrix', 'FBController@getPrix');
 });
 
 Route::prefix('auth')->group(function () {
