@@ -1,7 +1,9 @@
 <template>
-
     <div class="row">
-        <div class="col-12 ">
+        <div v-if="loading">
+            <b-spinner></b-spinner>
+        </div>
+        <div v-if="!loading" class="col-12">
             <div data-spy="scroll" class="pre-scrollable cards-box">
                 <table class="table">
                     <thead class="thead-light">
@@ -32,15 +34,21 @@
         name: "Order",
         data() {
             return {
-                data: []
+                data: [],
+                loading: false,
             }
         },
         mounted() {
-            this.update()
+            //this.update();
+        },
+        created() {
+            this.update();
         },
         methods: {
             update() {
+                this.loading = true;
                 axios.get('/getOrder').then((response) => {
+                    this.loading = false;
                     this.data = response.data;
                     console.dir(response.data);
                 });

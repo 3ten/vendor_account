@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <a class="navbar-brand" href="#">Navbar</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -39,7 +39,11 @@
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Accept</button>
                         </form>
                     </div>
-                </nav>
+                </nav> -->
+                <div class="searching">
+                    <label for="search">Фильтр:</label>
+                    <input type="text" v-model="search" placeholder="Введите данные">
+                </div>
             </div>
         </div>
         <div class="row">
@@ -55,11 +59,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in data" :key="item.articul">
+                        <tr v-for="item in filterData" :key="item.articul">
                             <th scope="row"> {{ item.articul }}</th>
                             <td> {{ item.name }}</td>
-                            <td> {{item.quantity +' '+item.meas}}</td>
-                            <td> {{item.rub}}</td>
+                            <td> {{ item.quantity +' '+item.meas }}</td>
+                            <td> {{ item.rub }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -77,6 +81,7 @@
         data() {
             return {
                 data: [],
+                search: '',
             }
         },
         mounted() {
@@ -87,11 +92,18 @@
                 // console.log(this.$router);
                 console.dir(this.id);
                 axios.post('/getOrderList', {id: this.id}).then((response) => {
-                    this.data = response.data;
+                    this.data = response.data
                     console.dir(this.data);
                 });
-            }
-        }
+            },
+        },
+        computed: {
+            filterData() {
+                return this.data.filter(order => {
+                    return (order.articul.toLowerCase().includes(this.search.toLowerCase()) || order.name.toLowerCase().includes(this.search.toLowerCase())) 
+                });
+            },
+        },
 
     }
 </script>

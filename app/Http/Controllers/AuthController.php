@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class AuthController extends Controller
 {    
@@ -41,10 +42,9 @@ class AuthController extends Controller
     }   
     public function login(Request $request)
     {
-        $credentials1 = $request->only('email', 'password');
-        $credentials2 = $request->only('code');
-              
-        if ($token = $this->guard()->attempt($credentials1) || $token = $this->guard()->attempt($credentials2)) {
+        $credentials = $request->only('email', 'password');
+
+        if ($token = $this->guard()->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         } 
 
