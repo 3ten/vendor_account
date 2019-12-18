@@ -130,5 +130,30 @@ class FBController extends Controller
         ];
         return $data;
     }
+
+    public function getClients(Request $request)
+    {
+        $db = ibase_connect($this->database, $this->user, $this->password);
+        $sql = "SELECT CL.ID_CLIENTS, CL.INN_CLIENTS, CL.KPP, CL.NAME_CLIENTS, CL.TEL_CLIENTS, CL.CITY_CLIENTS, CL.ADDRES_CLIENTS, CL.COMMENT_CLIENTS, CL.IS_ACCEPT_CLIENTS, OK.NAME, CL.LEGAL_NAME FROM CLIENTS CL LEFT JOIN OWNKIND OK ON CL.OWNKIND=OK.ID WHERE CL.CLIENT_TYPE = 0";
+        @$getClients_sql = ibase_query($sql, $db);
+        $clients = array();
+        while (@$getClients = ibase_fetch_assoc($getClients_sql)) {
+            $client = [
+                'id' => $getClients['ID_CLIENTS'],
+                'inn' => $getClients['INN_CLIENTS'],     
+                'kpp' => $getClients['KPP'],
+                'name' => mb_convert_encoding($getClients['NAME_CLIENTS'], 'UTF-8', 'windows-1251'), 
+                'tel' => $getClients['TEL_CLINETS'],
+                'city' => mb_convert_encoding($getClients['CITY_CLIENTS'], 'UTF-8', 'windows-1251'),
+                'address' => mb_convert_encoding($getClients['ADDRES_CLIENTS'], 'UTF-8', 'windows-1251'),
+                'comment' => mb_convert_encoding($getClients['COMMENT_CLIENTS'], 'UTF-8', 'windows-1251'),
+                'isAccept' => $getClients['IS_ACCEPT_CLIENTS'],
+                'ownkind' => mb_convert_encoding($getClients['NAME'], 'UTF-8', 'windows-1251'),
+                'fullName' => mb_convert_encoding($getClients['LEGAL_NAME'], 'UTF-8', 'windows-1251'),    
+            ];
+            array_push($clients, $client);
+        }
+        return $clients;
+    }
 //
 }

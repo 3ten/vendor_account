@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
     Route::get('/getCards', 'FBController@getCards');
     Route::get('/getOrder', 'FBController@getOrder');
+    Route::get('/getVendors', 'FBController@getClients')->middleware('isShop');
     Route::post('/getOrderList/', 'FBController@getOrderList');
     Route::post('/getOst', 'FBController@getOst');
     Route::post('/getPrix', 'FBController@getPrix');

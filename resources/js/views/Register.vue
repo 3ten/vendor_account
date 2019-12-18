@@ -28,6 +28,16 @@
                 <span class="help-block" v-if="error && errors.name">{{ errors.name }}</span>
             </div>
 
+            <div class="form-check form-check-inline" v-bind:class="{ 'has-error': error && errors.name }">
+                <input type="radio" class="form-check-input" v-model="role" value="1" name="role" id="role1" required>
+                <label for="role">Поставщик</label>
+            </div>
+
+            <div class="form-check form-check-inline" v-bind:class="{ 'has-error': error && errors.name }">
+                <input type="radio" class="form-check-input" v-model="role" value="0" name="role" id="role0" required>
+                <label for="role">Магазин</label>
+            </div>
+
             <div class="form-group" v-bind:class="{ 'has-error': error && errors.name }">
                 <label for="name">Телефон</label>
                 <input type="text" id="phone" class="form-control" v-model="phone" required>
@@ -51,7 +61,7 @@
                 <input type="password" id="password_confirmation" class="form-control" v-model="password_confirmation">
             </div>
 
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
     </div>
@@ -63,6 +73,7 @@
                 name: '',
                 inn: '',
                 kpp: '',
+                role: '',
                 phone: '',
                 email: '',
                 password: '',
@@ -82,6 +93,7 @@
                         name: app.name,
                         inn: app.inn,
                         kpp: app.kpp,
+                        role: app.isShop,
                         phone: app.phone,
                         email: app.email,
                         password: app.password,

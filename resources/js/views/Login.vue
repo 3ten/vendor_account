@@ -43,7 +43,7 @@
                     password: app.password,
                 }, 
                 success: function () {
-                    const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'dashboard';
+                    const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 0 ? 'shop.dashboard' : 'dashboard';
                     this.$router.push({name: redirectTo});
                     this.loading = false;
                 },

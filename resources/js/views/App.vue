@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul v-if="$auth.user().role === 1" class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'dashboard' }">Главная</router-link>
                     </li>
@@ -30,6 +30,17 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'cards' }">Товары</router-link>
                     </li>
+                </ul>
+                <ul v-if="$auth.user().role === 0" class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'shop.vendors' }">Поставщики</router-link>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'order' }">Заказы</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'cards' }">Товары</router-link>
+                    </li> -->
                 </ul>
                <div class="dropdown my-2 my-lg-0 pull-right">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

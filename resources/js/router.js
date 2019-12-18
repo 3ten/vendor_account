@@ -6,6 +6,12 @@ import Home from './views/Home.vue'
 import Stats from './views/Stats.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register'
+
+//shop
+import ShopDashboard from './views/shop/Dashboard'
+import Vendors from './views/shop/Vendors'
+
+//vendor
 import Dashboard from './views/Dashboard'
 import Cards from './views/Cards'
 import Order from './views/Order'
@@ -51,7 +57,23 @@ const router = new VueRouter({
             name: 'dashboard',
             component: Dashboard,
             meta: {
-                auth: true
+                auth: {roles: [1, 2, 3], redirect: {name: 'login'}, forbiddenRedirect: '/403'}
+            },
+        },
+        {
+            path: '/shop',
+            name: 'shop.dashboard',
+            component: ShopDashboard,
+            meta: {
+                auth: {roles: 0, redirect: {name: 'login'}, forbiddenRedirect: '/403'}
+            },
+        },
+        {
+            path: '/vendors',
+            name: 'shop.vendors',
+            component: Vendors,
+            meta: {
+                auth: {roles: 0, redirect: {name: 'login'}, forbiddenRedirect: '/403'}
             },
         },
         {
