@@ -143,7 +143,7 @@ class FBController extends Controller
                 'inn' => $getClients['INN_CLIENTS'],     
                 'kpp' => $getClients['KPP'],
                 'name' => mb_convert_encoding($getClients['NAME_CLIENTS'], 'UTF-8', 'windows-1251'), 
-                'tel' => $getClients['TEL_CLINETS'],
+                'tel' => $getClients['TEL_CLIENTS'],
                 'city' => mb_convert_encoding($getClients['CITY_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'address' => mb_convert_encoding($getClients['ADDRES_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'comment' => mb_convert_encoding($getClients['COMMENT_CLIENTS'], 'UTF-8', 'windows-1251'),
