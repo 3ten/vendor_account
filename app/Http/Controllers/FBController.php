@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
 
 class FBController extends Controller
 {
@@ -138,8 +139,11 @@ class FBController extends Controller
         @$getClients_sql = ibase_query($sql, $db);
         $clients = array();
         while (@$getClients = ibase_fetch_assoc($getClients_sql)) {
+            if (User::where('inn', $getClients['INN_CLIENTS'])->get()->first() || User::where('inn', $getClients['INN_CLIENTS'])->get()->first()) $status = 1;
+            else $status = 0;
             $client = [
                 'id' => $getClients['ID_CLIENTS'],
+                'status' => $status, 
                 'inn' => $getClients['INN_CLIENTS'],     
                 'kpp' => $getClients['KPP'],
                 'name' => mb_convert_encoding($getClients['NAME_CLIENTS'], 'UTF-8', 'windows-1251'), 

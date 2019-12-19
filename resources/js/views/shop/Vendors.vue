@@ -25,6 +25,7 @@
                     <tbody>
                         <tr :key="el.id" v-for="el in data" v-on:click="onClick(el.id)">
                             <th scope="row"> {{el.id}}</th>
+                            <td> {{el.status}}</td>
                             <td> {{el.inn}}</td>
                             <td> {{el.kpp}}</td>
                             <td> {{el.name}}</td>
