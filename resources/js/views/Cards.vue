@@ -2,6 +2,7 @@
     <div class="row mainBlock">
         <div class="col-xl-4">
             <div data-spy="scroll" class="pre-scrollable cards-box">
+
                 <b-spinner v-if="loadingCards"></b-spinner>
                 <div v-if="!loadingCards">
                     <div :key="el.articul" v-for="el in data">
@@ -36,7 +37,7 @@
 
 
 <script>
-    import LineChart from '../LineChart.js';
+    import LineChart from '../charts/LineChart.js';
 
     export default {
         components: {
@@ -53,6 +54,7 @@
                 loadingCards: false,
                 loadingOst: false,
                 loadingPrix: false,
+
             }
         },
         mounted() {
@@ -64,7 +66,9 @@
         methods: {
             update() {
                 this.loadingCards = true;
-                axios.get('/getCards').then((response) => {
+                let fdb_l = this.$auth.user().fdb_login;
+                console.log(fdb_l + "::");
+                axios.post('/getCards', {fdb_login: fdb_l}).then((response) => {
                     this.loadingCards = false;
                     this.data = response.data;
                     console.dir(response.data);

@@ -22,6 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('inn')->unique();
             $table->string('kpp')->unique();
+            $table->string('fdb_path')->default('');
+            $table->string('fdb_login')->default('SYSDBA');
+            $table->string('fdb_password')->default('masterkey');
             $table->integer('role')->default(1);
             $table->string('code')->unique();
             $table->boolean('is_active')->default(false);

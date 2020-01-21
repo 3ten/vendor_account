@@ -9,24 +9,25 @@ use App\User;
 
 class FBController extends Controller
 {
-    private $database = 'C:\Users\nesst\Downloads\MY_BASE.FDB';
+    private $database = 'D:\Datakrat\Database\MY_BASE.FDB';
     private $user = 'SYSDBA';
     private $password = 'masterkey';
 
-    public function getCards()
+
+    public function getCards(Request $request)
     {
-        //$database = 'C:\Users\nesst\OneDrive\Рабочий стол\web\MY_BASE.FDB';
-        //$user = 'SYSDBA';
-        //$password = 'masterkey';
-        $db = ibase_connect($this->database, $this->user, $this->password);
+        $fdb_login = $request->fdb_login;
+
+        $db = ibase_connect($this->database, $fdb_login, $this->password);
 
         $Cards = array();
-        @$getCards_SQL = ibase_query("select first 50 * FROM CARDSCLA cl left join ostdaily od on cl.articul = od.articul where od.place_index ='13' and od.ost_date = '02.10.2018 00:00'", $db);
+        @$getCards_SQL = ibase_query("select * FROM CARDSCLA cl left join disccard dc on dc.articul= cl.articul left join ostdaily od on cl.articul = od.articul where dc.price_kind ='568' and cl.client_index = 427 and od.place_index ='13' and od.ost_date = '02.10.2018 00:00'", $db);
         while (@$getCards = ibase_fetch_assoc($getCards_SQL)) {
             $card = [
                 'articul' => $getCards['ARTICUL'],
                 'name' => mb_convert_encoding($getCards['NAME'], 'UTF-8', 'windows-1251'),
                 'ost' => mb_convert_encoding($getCards['QUANTITY'], 'UTF-8', 'windows-1251'),
+                'price' => mb_convert_encoding($getCards['PRICE_RUB'], 'UTF-8', 'windows-1251'),
             ];
 
 
@@ -37,6 +38,89 @@ class FBController extends Controller
         return $Cards;
     }
 
+    public function getCardAnalysis(Request $request)
+    {
+        $fdb_path = $request->fdb_path;
+        $fdb_login = $request->fdb_login;
+        $fdb_password = $request->fdb_password;
+        $client_id = $request->client_id;
+        $client_inn = $request->client_inn;
+        $client_kpp = $request->client_kpp;
+        $begin_date = $request->begin_date;
+        $end_date = $request->end_date;
+
+
+        $db = ibase_connect($fdb_path, $fdb_login, $fdb_password);
+
+        $Cards = array();
+        @$getCards_SQL = ibase_query("SELECT * FROM VENDOR_ACCOUNT_GET_CARDS($client_id ,'$client_inn', '$client_kpp','$begin_date','$end_date')", $db);
+        while (@$getCards = ibase_fetch_assoc($getCards_SQL)) {
+            $card = [
+                'articul' => $getCards['OUT_ARTICUL'],
+                'name' => mb_convert_encoding($getCards['OUT_NAME'], 'UTF-8', 'windows-1251'),
+                'ost' => (double)mb_convert_encoding($getCards['OUT_OST'], 'UTF-8', 'windows-1251'),
+                'markup' => (double)number_format($getCards['OUT_MARKUP'], 2),
+                'markup_per' => (double)number_format($getCards['OUT_MARKUP_PER'], 2),
+                'retail_price' => (double)number_format($getCards['OUT_RETAIL_PRICE'], 2),
+                'retail_sum' => (double)number_format($getCards['OUT_RETAIL_SUM'], 2),
+                'client_price' => (double)number_format($getCards['OUT_CLIENT_PRICE'], 2),
+                'sales' => (double)mb_convert_encoding($getCards['OUT_SALES'], 'UTF-8', 'windows-1251'),
+            ];
+
+
+            array_push($Cards, $card);
+
+        }
+
+        return $Cards;
+    }
+
+    public function getSalesAnalysis(Request $request)
+    {
+        $fdb_path = $request->fdb_path;
+        $fdb_login = $request->fdb_login;
+        $fdb_password = $request->fdb_password;
+        $client_id = $request->client_id;
+        $client_inn = $request->client_inn;
+        $client_kpp = $request->client_kpp;
+        $begin_date = $request->begin_date;
+        $end_date = $request->end_date;
+
+
+        $db = ibase_connect($fdb_path, $fdb_login, $fdb_password);
+
+        $Cards = array();
+        @$getCards_SQL = ibase_query("SELECT * FROM VENDOR_ACCOUNT_GET_SALES($client_id ,'$client_inn', '$client_kpp','$begin_date','$end_date') order by OUT_DATE", $db);
+        while (@$getCards = ibase_fetch_assoc($getCards_SQL)) {
+            $card = [
+                'sales_quant' => number_format($getCards['OUT_SALES_QUANT'], 2),
+                'sales_client_sum' => number_format($getCards['OUT_SALES_CLIENT_SUM'], 2),
+                'sales_retail_sum' => number_format($getCards['OUT_SALES_RETAIL_SUM'], 2),
+                'supply_quant' => number_format($getCards['OUT_SUPPLY_QUANT'], 2),
+                'sales_delta' => number_format($getCards['OUT_SALES_DELTA'], 2),
+                'date' => str_replace('00:00:00', '', mb_convert_encoding($getCards['OUT_DATE'], 'UTF-8', 'windows-1251')),
+            ];
+            $isExist = 0;
+            for ($i = 0; $i < count($Cards); $i++) {
+                if ($Cards[$i]['date'] == $card['date']) {
+                    $Cards[$i]['sales_client_sum'] += (double)$card['sales_client_sum'];
+                    $Cards[$i]['sales_quant'] += (double)$card['sales_quant'];
+                    $Cards[$i]['sales_retail_sum'] += (double)$card['sales_retail_sum'];
+                    // $Cards[$i]['supply_quant'] += $card['supply_quant'];
+                    // $Cards[$i]['sales_delta'] += $card['sales_delta'];
+                    $isExist = 1;
+                }
+            }
+            if ($isExist == 0) {
+                array_push($Cards, $card);
+            }
+
+
+        }
+
+
+        return $Cards;
+    }
 
     public function getOrder()
     {
@@ -86,6 +170,7 @@ class FBController extends Controller
                 'query' => $sql,
             ];
 
+
             array_push($Cards, $card);
 
         }
@@ -110,6 +195,29 @@ class FBController extends Controller
             'date' => $date,
         ];
         return $data;
+    }
+
+    public function getCardSales(Request $request)
+    {
+        $db = ibase_connect($this->database, $this->user, $this->password);
+        $articul = $request->articul;
+        $begin_date = $request->begin_date;
+        $end_date = $request->end_date;
+        $data = array();
+        $sales = array();
+        $sql = "SELECT * FROM SALES_CALC_ART_FETCH('$articul','$begin_date','$end_date','1','0')";
+        @$getSales_SQL = ibase_query($sql, $db);
+        while (@$getSales = ibase_fetch_assoc($getSales_SQL)) {
+            $data = [
+                'date' => $getSales['ON_DATE'],
+                'ost' => $getSales['QUANTITY'],
+                'sales' => $getSales['SALE0QUANTITY'],
+
+            ];
+            array_push($sales, $data);
+        }
+
+        return $sales;
     }
 
     public function getPrix(Request $request)
@@ -147,7 +255,7 @@ class FBController extends Controller
             $hasAccess = false;
             $canMessage = false;
             $canSeePrices = false;
-            
+
             if ($currentClient) {
                 $status = 1;
                 $currentClientId = $currentClient->id;
@@ -157,7 +265,7 @@ class FBController extends Controller
                 $canMessage = $relation->can_message;
                 $canSeePrices = $relation->can_see_prices;
             }
-               
+
             $client = [
                 'id' => $currentClientId,
                 'code' => $getClients['ID_CLIENTS'],
@@ -171,8 +279,8 @@ class FBController extends Controller
                 'comment' => mb_convert_encoding($getClients['COMMENT_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'isAccept' => $getClients['IS_ACCEPT_CLIENTS'],
                 'ownkind' => mb_convert_encoding($getClients['NAME'], 'UTF-8', 'windows-1251'),
-                'fullName' => mb_convert_encoding($getClients['LEGAL_NAME'], 'UTF-8', 'windows-1251'), 
-                'isActive' => $currentClientIsActive,   
+                'fullName' => mb_convert_encoding($getClients['LEGAL_NAME'], 'UTF-8', 'windows-1251'),
+                'isActive' => $currentClientIsActive,
                 'hasAccess' => $hasAccess,
                 'canMessage' => $canMessage,
                 'canSeePrices' => $canSeePrices,

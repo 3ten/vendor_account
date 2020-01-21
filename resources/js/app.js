@@ -49,6 +49,13 @@ Vue.use(BootstrapVue)
 Vue.component('random-chart', require('./components/RandomChart.vue').default);
 Vue.component('app', App);
 
+import SortedTablePlugin from "vue-sorted-table";
+Vue.use(SortedTablePlugin);
+
+import VMdDateRangePicker from "v-md-date-range-picker";
+Vue.use(VMdDateRangePicker);
+
+
 import { BSpinner } from 'bootstrap-vue'
 Vue.component('b-spinner', BSpinner)
 /**

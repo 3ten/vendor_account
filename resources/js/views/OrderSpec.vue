@@ -89,10 +89,9 @@
         },
         methods: {
             update() {
-                // console.log(this.$router);
                 console.dir(this.id);
                 axios.post('/getOrderList', {id: this.id}).then((response) => {
-                    this.data = response.data
+                    this.data = response.data;
                     console.dir(this.data);
                 });
             },

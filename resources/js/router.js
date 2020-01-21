@@ -18,6 +18,8 @@ import Dashboard from './views/Dashboard'
 import Cards from './views/Cards'
 import Order from './views/Order'
 import OrderList from './views/OrderSpec'
+import Offer from './views/Offers'
+import Reconc from './views/Reconciliation'
 
 const router = new VueRouter({
     history: true,
@@ -106,6 +108,24 @@ const router = new VueRouter({
             path: '/orderList',
             name: 'orderList',
             component: OrderList,
+            props: true,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/offer',
+            name: 'offer',
+            component: Offer,
+            props: true,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/reconc',
+            name: 'reconc',
+            component: Reconc,
             props: true,
             meta: {
                 auth: true

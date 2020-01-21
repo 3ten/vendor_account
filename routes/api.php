@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/getOrderList/', 'FBController@getOrderList');
     Route::post('/getOst', 'FBController@getOst');
     Route::post('/getPrix', 'FBController@getPrix');
+    Route::post('/getCardAnalysis', 'FBController@getCardAnalysis')->middleware('isVendor');
+    Route::post('/getSalesAnalysis', 'FBController@getSalesAnalysis')->middleware('isVendor');
+    Route::post('/getCardSales', 'FBController@getCardSales')->middleware('isVendor');
     Route::post('/sendChatMessage', 'MessageController@sendMessage');
     Route::post('/getRelations', 'UsersRelationsController@getRelations');
     Route::post('/saveMessage', 'MessageController@saveMessage');
@@ -38,11 +41,12 @@ Route::prefix('auth')->group(function () {
     Route::get('refresh', 'AuthController@refresh');
     Route::post('parse', 'InviteController@parse');
     Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('refresh', 'AuthController@refresh');
+    Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', 'AuthController@user');
         Route::post('logout', 'AuthController@logout');
     });
 });
-
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
