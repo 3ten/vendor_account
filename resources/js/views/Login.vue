@@ -7,7 +7,7 @@
             <div class="alert alert-danger" v-if="error">
                 <p>There was an error, unable to sign in with those credentials.</p>
             </div>
-            <form autocomplete="off" @submit.prevent="login" method="post">
+            <form autocomplete="off" @submit.prevent="login" method="">
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email" required>
@@ -32,13 +32,29 @@
                 loading: false
             }
         },
+        mounted() {
+            if (this.$route.query.token) {
+                this.token = this.$route.query.token;
+                axios.post('/auth/parse', {token: this.token}).then(response => {
+                    this.email = response.data.email;
+                    this.password = response.data.password;
+                }).catch(response => {
+                    console.log("Ошибка!");
+                });
+                setTimeout( () => {
+                    this.login();
+                    console.log("auth");
+                }, 1000)
+            }
+        },
+    
     methods: {
         login(){
             var redirect = this.$auth.redirect();
             var app = this;
             this.loading = true;
             this.$auth.login({
-                params: {
+                data: {
                     email: app.email,
                     password: app.password,
                 }, 

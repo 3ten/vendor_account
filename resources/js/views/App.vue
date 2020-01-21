@@ -30,17 +30,20 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'cards' }">Товары</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'chat' }">Чат</router-link>
+                    </li>
                 </ul>
                 <ul v-if="$auth.user().role === 0" class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'shop.vendors' }">Поставщики</router-link>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'order' }">Заказы</router-link>
+                        <router-link class="nav-link" :to="{ name: 'shop.vendors' }">Контроль доступа</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'cards' }">Товары</router-link>
-                    </li> -->
+                        <router-link class="nav-link" :to="{ name: 'shop.vendors.info' }">Поставщики</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'chat' }">Чат</router-link>
+                    </li>
                 </ul>
                <div class="dropdown my-2 my-lg-0 pull-right">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

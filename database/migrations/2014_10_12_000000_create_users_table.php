@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('kpp')->unique();
             $table->integer('role')->default(1);
             $table->string('code')->unique();
+            $table->boolean('is_active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             

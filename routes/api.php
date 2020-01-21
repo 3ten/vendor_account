@@ -19,21 +19,30 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
     Route::get('/getCards', 'FBController@getCards');
     Route::get('/getOrder', 'FBController@getOrder');
-    Route::get('/getVendors', 'FBController@getClients')->middleware('isShop');
+    Route::post('/getVendors', 'FBController@getClients')->middleware('isShop');
+    Route::post('/saveVendor', 'FBController@saveOptions')->middleware('isShop');
+    Route::post('/sendMessage', 'InviteController@sendMessage')->middleware('isShop');
     Route::post('/getOrderList/', 'FBController@getOrderList');
     Route::post('/getOst', 'FBController@getOst');
     Route::post('/getPrix', 'FBController@getPrix');
+    Route::post('/sendChatMessage', 'MessageController@sendMessage');
+    Route::post('/getRelations', 'UsersRelationsController@getRelations');
+    Route::post('/saveMessage', 'MessageController@saveMessage');
+    Route::post('/getOldMessages', 'MessageController@getOldMessages');
+    Route::post('/createRelation', 'UsersRelationsController@createRelation')->middleware('isShop');
 });
 
 Route::prefix('auth')->group(function () {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
-    Route::get('refresh', 'AuthController@refresh');    
+    Route::get('refresh', 'AuthController@refresh');
+    Route::post('parse', 'InviteController@parse');
     Route::group(['middleware' => 'auth:api'], function(){
         Route::get('user', 'AuthController@user');
         Route::post('logout', 'AuthController@logout');
     });
 });
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

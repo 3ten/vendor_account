@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\UsersRelations;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'code' => Hash::make('1234'),
             'role' => 0,
+            'is_active' => true,
         ]);     
 
         User::create([
@@ -32,6 +34,27 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('secret'),
             'code' => Hash::make('12345'),
             'role' => 1,
+            'is_active' => true,
+        ]);
+
+        User::create([
+            'name' => 'Ярче',
+            'email' => 'yarche@test.com',
+            'phone' =>'88005553535',
+            'inn' => '5405356300',
+            'kpp' => '540501001',
+            'password' => Hash::make('123'),
+            'code' => Hash::make('123456'),
+            'role' => 1,
+            'is_active' => true,
+        ]);
+
+        UsersRelations::create([
+            'vendor_id' => 3,
+            'shop_id' => 1,
+            'has_access' => true,
+            'can_message' => false,
+            'can_see_prices' => false,
         ]);
     }
 

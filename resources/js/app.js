@@ -15,6 +15,8 @@ import auth from './auth'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 
+import FontAwesome from '@fortawesome/fontawesome-free/js/all.js'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 

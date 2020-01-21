@@ -82,7 +82,25 @@
                 error: '',
                 errors: {},
                 success: false,
+                token: '',
             };
+        },
+
+        created() {
+            if (this.$route.query.token) {
+                console.log(this.$route.query.token);
+                this.token = this.$route.query.token;
+                axios.post('/auth/parse', {token: this.token}).then(response => {
+                    console.dir(response);
+                    this.email = response.data.email;
+                    this.inn = response.data.vendor_inn;
+                    this.kpp = response.data.vendor_kpp;
+                    console.log(response.data.email);
+                }).catch(response => {
+                    console.log("Ошибка!");
+                });
+            }
+            
         },
 
         methods: {
@@ -98,6 +116,7 @@
                         email: app.email,
                         password: app.password,
                         password_confirmation: app.password_confirmation,
+                    
                     }, 
                     success: function () {
                         app.success = true;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
@@ -85,7 +86,6 @@ class FBController extends Controller
                 'query' => $sql,
             ];
 
-
             array_push($Cards, $card);
 
         }
@@ -139,10 +139,28 @@ class FBController extends Controller
         @$getClients_sql = ibase_query($sql, $db);
         $clients = array();
         while (@$getClients = ibase_fetch_assoc($getClients_sql)) {
-            if (User::where('inn', $getClients['INN_CLIENTS'])->get()->first() || User::where('inn', $getClients['INN_CLIENTS'])->get()->first()) $status = 1;
-            else $status = 0;
+            $currentClient = User::where([ ['inn', $getClients['INN_CLIENTS'] ], ['kpp', $getClients['KPP']] ])->get()->first();
+
+            $currentClientId = NULL;
+            $currentClientIsActive = false;
+            $status = 0;
+            $hasAccess = false;
+            $canMessage = false;
+            $canSeePrices = false;
+            
+            if ($currentClient) {
+                $status = 1;
+                $currentClientId = $currentClient->id;
+                $currentClientIsActive = $currentClient->is_active;
+                $relation = DB::table('users_relations')->where([ ['vendor_id', $currentClientId], ['shop_id', $request->shop_id] ])->get()->first();
+                $hasAccess = $relation->has_access;
+                $canMessage = $relation->can_message;
+                $canSeePrices = $relation->can_see_prices;
+            }
+               
             $client = [
-                'id' => $getClients['ID_CLIENTS'],
+                'id' => $currentClientId,
+                'code' => $getClients['ID_CLIENTS'],
                 'status' => $status, 
                 'inn' => $getClients['INN_CLIENTS'],     
                 'kpp' => $getClients['KPP'],
@@ -153,11 +171,29 @@ class FBController extends Controller
                 'comment' => mb_convert_encoding($getClients['COMMENT_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'isAccept' => $getClients['IS_ACCEPT_CLIENTS'],
                 'ownkind' => mb_convert_encoding($getClients['NAME'], 'UTF-8', 'windows-1251'),
-                'fullName' => mb_convert_encoding($getClients['LEGAL_NAME'], 'UTF-8', 'windows-1251'),    
+                'fullName' => mb_convert_encoding($getClients['LEGAL_NAME'], 'UTF-8', 'windows-1251'), 
+                'isActive' => $currentClientIsActive,   
+                'hasAccess' => $hasAccess,
+                'canMessage' => $canMessage,
+                'canSeePrices' => $canSeePrices,
             ];
             array_push($clients, $client);
         }
         return $clients;
     }
-//
+
+    public function saveOptions(Request $request)
+    {
+        foreach($request->data as $key => $vendorOptions) {
+            DB::table('users_relations')->updateOrInsert(
+                ['vendor_id' => $vendorOptions['vendor_id'], 'shop_id' => $vendorOptions['shop_id']],
+                ['has_access' => $vendorOptions['hasAccess'], 'can_message' => $vendorOptions['canMessage'], 'can_see_prices' => $vendorOptions['canSeePrices'] ]
+            );
+        }
+
+        return response()->json([
+            'status' => 'success',
+        ], 200);
+    }
+
 }
