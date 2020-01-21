@@ -1,4 +1,4 @@
-<template>
+<template>npm install --save @fortawesome/fontawesome-free
     
 </template>
 

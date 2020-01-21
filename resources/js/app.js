@@ -30,7 +30,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
  */
 
 // const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// files.keys().map(key => Vue.componnpent(key.split('/').pop().split('.')[0], files(key).default))
 
 // Set Vue globally
 window.Vue = Vue

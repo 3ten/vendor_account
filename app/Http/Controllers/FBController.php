@@ -269,10 +269,10 @@ class FBController extends Controller
             $client = [
                 'id' => $currentClientId,
                 'code' => $getClients['ID_CLIENTS'],
-                'status' => $status, 
-                'inn' => $getClients['INN_CLIENTS'],     
+                'status' => $status,
+                'inn' => $getClients['INN_CLIENTS'],
                 'kpp' => $getClients['KPP'],
-                'name' => mb_convert_encoding($getClients['NAME_CLIENTS'], 'UTF-8', 'windows-1251'), 
+                'name' => mb_convert_encoding($getClients['NAME_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'tel' => $getClients['TEL_CLIENTS'],
                 'city' => mb_convert_encoding($getClients['CITY_CLIENTS'], 'UTF-8', 'windows-1251'),
                 'address' => mb_convert_encoding($getClients['ADDRES_CLIENTS'], 'UTF-8', 'windows-1251'),
