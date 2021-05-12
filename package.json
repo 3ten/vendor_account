@@ -27,7 +27,7 @@
         "@fortawesome/fontawesome-free": "^5.12.0",
         "@websanova/vue-auth": "^2.21.14-beta",
         "bootstrap-vue": "^2.0.4",
-        "chart.js": "^2.8.0",
+        "chart.js": "^2.9.4",
         "es6-promise": "^4.2.8",
         "socket.io-client": "^2.3.0",
         "v-md-date-range-picker": "^2.6.0",
